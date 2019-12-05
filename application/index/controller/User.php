@@ -4,16 +4,15 @@ namespace app\index\controller;
 
 use think\App;
 use think\facade\Session;
-use think\Model;
 use think\Request;
 
 class User extends Container
 {
     public $uid;
 
-    public function __construct(App $app = null, Model $model = null)
+    public function __construct(App $app = null)
     {
-        parent::__construct($app, $model);
+        parent::__construct($app);
         $this->model = new \app\index\model\User();
         $this->uid = Session::get("uid");
     }
@@ -93,7 +92,13 @@ class User extends Container
 
     public function setEmail($email)
     {
-        $result = $this->model->save(["email" => $email], $this->uid);
+        $result = $this->model->save(["email" => $email], ["id"=>$this->uid]);
+        return $this->response($result, "ok");
+    }
+
+    public function setUsername($username)
+    {
+        $result = $this->model->save(["username" => $username], ['id'=>$this->uid]);
         return $this->response($result, "ok");
     }
 }
