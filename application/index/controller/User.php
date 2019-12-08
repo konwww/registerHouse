@@ -2,6 +2,8 @@
 
 namespace app\index\controller;
 
+use classes\YBException;
+use classes\YBOpenApi;
 use think\App;
 use think\facade\Session;
 use think\Request;
@@ -42,7 +44,30 @@ class User extends Container
      */
     public function autoLoginByYiBan()
     {
+        $api = YBOpenApi::getInstance()->init("6c0c36ce97d44aaa", "d8100bc4371d4036fc478acf0e6f4e1a", "http://f.yiban.cn/iapp540992");
+        $iapp = $api->getIApp();
 
+        try {
+            //轻应用获取access_token，未授权则跳转至授权页面
+            $info = $iapp->perform();
+        } catch (YBException $ex) {
+//            echo $ex->getMessage();
+            return Error::login("未获取到授权，请保证在易班内登陆");
+        }
+        if (!isset($info)) Error::login("未获取到授权，请保证在易班内登陆");
+        $token = $info['visit_oauth']['access_token'];//轻应用获取的token
+        $result = $this->model->where(["yiban_openid" => $info["visit_user"]["userid"]])->find();
+        $isExist = !empty($result);
+        //当用户从未登陆过本系统时，创建新账户
+        if (!$isExist) {
+            $this->model->save(["yiban_openid" => $info["visit_user"]["userid"], "username" => $info["visit_user"]["username"]]);
+        } else {
+            Session::set("user_id", $result->getData("id"));
+            Session::set("user_data", $result->getData());
+            Session::set("yiban_token", $token);
+            Session::set("yiban_expire", $token);
+        }
+        $this->redirect($this->request->domain() . "/m/");
     }
 
     /**
@@ -92,13 +117,13 @@ class User extends Container
 
     public function setEmail($email)
     {
-        $result = $this->model->save(["email" => $email], ["id"=>$this->uid]);
+        $result = $this->model->save(["email" => $email], ["id" => $this->uid]);
         return $this->response($result, "ok");
     }
 
     public function setUsername($username)
     {
-        $result = $this->model->save(["username" => $username], ['id'=>$this->uid]);
+        $result = $this->model->save(["username" => $username], ['id' => $this->uid]);
         return $this->response($result, "ok");
     }
 }

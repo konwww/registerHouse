@@ -12,5 +12,6 @@ class OAuth extends Controller
     public function __construct(App $app = null)
     {
         parent::__construct($app);
+        $isMobi=$this->request->isMobile();
     }
 }

@@ -11,12 +11,17 @@ return [
     "[building]" => [
         "index" => "index/Building/index"
     ]
-    ,"[user]"=>[
-        "login"=>"index/User/login",
-        "available-house"=>"index/Order/availableHouseByUser",
-        "unavailable-house"=>"index/Order/unavailableHouseByUser",
-        "change-pwd"=>"index/User/changePwd",
-        "set-email"=>"index/User/setEmail",
-        "set-username"=>"index/User/setUsername",
+    , "[user]" => [
+        "login" => "index/User/login",
+        "available-house" => "index/Order/availableHouseByUser",
+        "unavailable-house" => "index/Order/unavailableHouseByUser",
+        "change-pwd" => "index/User/changePwd",
+        "set-email" => "index/User/setEmail",
+        "set-username" => "index/User/setUsername",
+        "break-up" => "index/Order/breakUp"
+    ]
+    , "[oauth]" => [
+        "yiban" => "index/User/autoLoginByYiBan",
+        "test" => "index/User/test"
     ]
 ];

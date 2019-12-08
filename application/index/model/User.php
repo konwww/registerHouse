@@ -15,7 +15,7 @@ class User extends Model
     public $username;
     public $wx_openid;
     public $yiban_openid;
-    protected $deleteTime;
+    protected $deleteTime="deleteTime";
     protected $createTime = "createTime";
     protected $updateTime = "updateTime";
     protected $autoWriteTimestamp = "datetime";

@@ -50,12 +50,13 @@ class Order extends Container
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function availableHouseByUser()
+    public function availableHouseByUser($page = 1, $limit = 10)
     {
         $uid = Session::get("user_id");
 //        如果endTime小于当前时间，即视为该预约提前结束
-        $data = $this->model->where(["uid" => $uid])->where("`startTime` >NOW() and `endTime`>NOW()")->select();
-        $this->response($data, "ok", count($data));
+        $data = $this->model->where(["uid" => $uid])->where("`startTime` >NOW() and `endTime`>NOW()")->order("endTime", "desc")->page($page, $limit)->select();
+        $count = $this->model->where(["uid" => $uid])->where("`startTime` >NOW() and `endTime`>NOW()")->count();
+        $this->response($data, "ok", $count);
     }
 
     /**
@@ -64,11 +65,24 @@ class Order extends Container
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function unavailableHouseByUser()
+    public function unavailableHouseByUser($page = 1, $limit = 10)
     {
         $uid = Session::get("user_id");
 //        如果endTime小于当前时间，即视为该预约提前结束
-        $data = $this->model->where(["uid" => $uid])->where("`startTime` <=NOW() or `endTime`<=NOW()")->select();
-        $this->response($data, "ok", count($data));
+        $count = $this->model->where(["uid" => $uid])->where("`startTime` <=NOW() or `endTime`<=NOW()")->count();
+        $data = $this->model->where(["uid" => $uid])->where("`startTime` <=NOW() or `endTime`<=NOW()")->order("endTime", "desc")->page($page, $limit)->select();
+        $this->response($data, "ok", $count);
+    }
+
+    /**
+     * 终止订单
+     * @param $id int 订单id
+     * @return \think\Response
+     */
+    public function breakUp($id)
+    {
+        $uid = Session::get("user_id");
+        $result = $this->model->save(["endTime" => date("Y-m-d H:i:s", time())], ["id" => $id, "uid" => $uid]);
+        return $this->response($result, "ok");
     }
 }
