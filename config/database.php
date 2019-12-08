@@ -15,11 +15,11 @@ return [
     // 服务器地址
     'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'classroom',
+    'database'        => 'blackboard_fins',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'blackboard_fins',
     // 密码
-    'password'        => '123456',
+    'password'        => 'ixaRaZcRFfZiHXZS',
     // 端口
     'hostport'        => '',
     // 连接dsn
