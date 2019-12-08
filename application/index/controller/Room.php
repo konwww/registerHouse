@@ -114,11 +114,13 @@ class Room extends Container
 //        if (is_null($room)) return Error::notFoundField("教室编号出错");
 //        $room->getData("limit");
         $courseTable = CourseTable::where("cid", $cid)
-            ->field(["*", "'grey' as color", "TIMESTAMPDIFF(MINUTE,startTime,endTime) as length", "((startTime/10000-8)-(startTime/10000-8)mod 1)*60+(startTime/10000-8)mod 1*100  as startHeight", "((endTime/10000-8)-(endTime/10000-8)mod 1)*60+(endTime/10000-8)mod 1*100 as endHeight"])
+//            ->field(["*", "'grey' as color", "TIMESTAMPDIFF(MINUTE,startTime,endTime) as length", "((startTime/10000-8)-(startTime/10000-8)mod 1)*60+(startTime/10000-8)mod 1*100  as startHeight", "((endTime/10000-8)-(endTime/10000-8)mod 1)*60+(endTime/10000-8)mod 1*100 as endHeight"])
+            ->field(["*", "'grey' as color", "(((endTime/10000-8)-(endTime/10000-8)mod 1)*60+(endTime/10000-8)mod 1*100)-(((startTime/10000-8)-(startTime/10000-8)mod 1)*60+(startTime/10000-8)mod 1*100) as length", "((startTime/10000-8)-(startTime/10000-8)mod 1)*60+(startTime/10000-8)mod 1*100  as startHeight", "((endTime/10000-8)-(endTime/10000-8)mod 1)*60+(endTime/10000-8)mod 1*100 as endHeight"])
             ->where("weekTimes", $weekTimes)->buildSql();
         $order = Order::where("cid", $cid)
             ->hidden(["uid"])
-            ->field(["*", "'grey' as color", "TIMESTAMPDIFF(MINUTE,startTime,endTime) as length", "((startTime/10000-8)-(startTime/10000-8)mod 1)*60+(startTime/10000-8)mod 1*100  as startHeight", "((endTime/10000-8)-(endTime/10000-8)mod 1)*60+(endTime/10000-8)mod 1*100 as endHeight"])
+//            ->field(["*", "'grey' as color", "TIMESTAMPDIFF(MINUTE,startTime,endTime) as length", "((startTime/10000-8)-(startTime/10000-8)mod 1)*60+(startTime/10000-8)mod 1*100  as startHeight", "((endTime/10000-8)-(endTime/10000-8)mod 1)*60+(endTime/10000-8)mod 1*100 as endHeight"])
+            ->field(["*", "'grey' as color", "(((endTime/10000-8)-(endTime/10000-8)mod 1)*60+(endTime/10000-8)mod 1*100)-(((startTime/10000-8)-(startTime/10000-8)mod 1)*60+(startTime/10000-8)mod 1*100) as length", "((startTime/10000-8)-(startTime/10000-8)mod 1)*60+(startTime/10000-8)mod 1*100  as startHeight", "((endTime/10000-8)-(endTime/10000-8)mod 1)*60+(endTime/10000-8)mod 1*100 as endHeight"])
             ->where("weekTimes", $weekTimes)
             ->union($courseTable)
             ->order("startHeight", "asc")
