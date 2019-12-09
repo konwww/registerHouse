@@ -5,6 +5,7 @@ namespace app\index\controller;
 use classes\YBException;
 use classes\YBOpenApi;
 use think\App;
+use think\facade\Log;
 use think\facade\Session;
 use think\Request;
 
@@ -21,7 +22,11 @@ class User extends Container
 
     public function zone()
     {
-        $uid = Session::get("user_id");
+        dump(md5("123456"));
+
+        $result = $this->model->where("id", $this->uid)->find();
+        if (is_null($result)) return Error::login("用户未登录");
+        $this->response($result->getData(), "ok");
     }
 
     /**
@@ -56,7 +61,8 @@ class User extends Container
         }
         if (!isset($info)) Error::login("未获取到授权，请保证在易班内登陆");
         $token = $info['visit_oauth']['access_token'];//轻应用获取的token
-        $result = $this->model->where(["yiban_openid" => $info["visit_user"]["userid"]])->find();
+        $result = $this->model->where("yiban_openid", $info["visit_user"]["userid"])->find();
+        Log::sql($result->getLastSql());
         $isExist = !empty($result);
         //当用户从未登陆过本系统时，创建新账户
         if (!$isExist) {

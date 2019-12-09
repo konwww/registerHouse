@@ -18,7 +18,8 @@ return [
         "change-pwd" => "index/User/changePwd",
         "set-email" => "index/User/setEmail",
         "set-username" => "index/User/setUsername",
-        "break-up" => "index/Order/breakUp"
+        "break-up" => "index/Order/breakUp",
+        "zone" => "index/User/zone"
     ]
     , "[oauth]" => [
         "yiban" => "index/User/autoLoginByYiBan",
