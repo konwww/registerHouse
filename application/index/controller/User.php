@@ -74,7 +74,8 @@ class User extends Container
             Session::set("yiban_token", $token);
             Session::set("yiban_expire", $token);
         }
-//        $this->redirect($this->request->domain() . "/m/");
+        $this->model->commit();
+        $this->redirect($this->request->domain() . "/m/");
     }
 
     /**
