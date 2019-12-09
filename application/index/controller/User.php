@@ -66,7 +66,7 @@ class User extends Container
         $isExist = !empty($result);
         //当用户从未登陆过本系统时，创建新账户
         if (!$isExist) {
-            $this->model->save(["yiban_openid" => $info["visit_user"]["userid"], "username" => $info["visit_user"]["username"]]);
+            $result = ($this->model)::create(["yiban_openid" => $info["visit_user"]["userid"], "username" => $info["visit_user"]["username"]]);
         } else {
             Log::sql($result->getLastSql());
             Session::set("user_id", $result->getData("id"));
@@ -74,7 +74,6 @@ class User extends Container
             Session::set("yiban_token", $token);
             Session::set("yiban_expire", $token);
         }
-        $this->model->commit();
         $this->redirect($this->request->domain() . "/m/");
     }
 
