@@ -60,14 +60,15 @@ class User extends Container
             return Error::login("未获取到授权，请保证在易班内登陆");
         }
         if (!isset($info)) Error::login("未获取到授权，请保证在易班内登陆");
+        dump($info);
         $token = $info['visit_oauth']['access_token'];//轻应用获取的token
         $result = $this->model->where("yiban_openid", $info["visit_user"]["userid"])->find();
-        Log::sql($result->getLastSql());
         $isExist = !empty($result);
         //当用户从未登陆过本系统时，创建新账户
         if (!$isExist) {
             $this->model->save(["yiban_openid" => $info["visit_user"]["userid"], "username" => $info["visit_user"]["username"]]);
         } else {
+            Log::sql($result->getLastSql());
             Session::set("user_id", $result->getData("id"));
             Session::set("user_data", $result->getData());
             Session::set("yiban_token", $token);
