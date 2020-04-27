@@ -20,7 +20,8 @@
         "topthink/framework": "5.1.*",
         "mobiledetect/mobiledetectlib": "^2.8",
       "ext-mcrypt": "*",
-      "ext-openssl": "*"
+      "ext-openssl": "*",
+      "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

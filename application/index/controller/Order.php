@@ -11,7 +11,7 @@ class Order extends Container
     public function __construct(App $app = null)
     {
         parent::__construct($app);
-        $this->model = new \app\index\model\Order();
+        $this->model = new \app\common\model\Order();
     }
 
     public function register($cid, $weekNum, $weekTimes, $startTime, $endTime, $usage)
