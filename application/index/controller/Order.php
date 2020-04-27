@@ -5,13 +5,12 @@ namespace app\index\controller;
 use app\index\model\CourseTable;
 use think\App;
 use think\facade\Session;
-use think\Model;
 
 class Order extends Container
 {
-    public function __construct(App $app = null, Model $model = null)
+    public function __construct(App $app = null)
     {
-        parent::__construct($app, $model);
+        parent::__construct($app);
         $this->model = new \app\index\model\Order();
     }
 

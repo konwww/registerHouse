@@ -10,7 +10,8 @@ class Room extends Container
 {
     public function __construct(App $app = null)
     {
-        parent::__construct($app, new \app\index\model\Room());
+        parent::__construct($app);
+        $this->model = new \app\index\model\Room();
     }
 
     /**
@@ -127,6 +128,7 @@ class Room extends Container
             ->select();
         return $this->response($order, "ok");
     }
+
     public function getHouseList($bid, $page = 1, $limit = 20)
     {
         $data = $this->model->field(["room_id as rid", "location as houseNum"])->where("bid", $bid)->page($page, $limit)->select();

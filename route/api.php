@@ -2,7 +2,7 @@
 return [
     "[public]" => [
         "validate" => ["index/Order/validateTime", ["method" => "get"]],
-        "register" => ["index/Order/register", ["method" => "get"]],
+        "register" => ["index/Order/register",],
         "filter" => ["index/Room/_filter"],
         "randHouse" => ["index/Room/getRandHouse"],
         "get-time-table" => ["index/Room/getTimeTable", ["method" => "get"]],

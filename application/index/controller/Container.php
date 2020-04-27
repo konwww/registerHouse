@@ -3,7 +3,6 @@
 namespace app\index\controller;
 
 use think\App;
-use think\Model;
 use think\Request;
 use think\Response;
 
@@ -12,9 +11,8 @@ class Container extends OAuth
     public $model;
     public $map = [];
 
-    public function __construct(App $app = null, Model $model = null)
+    public function __construct(App $app = null)
     {
-        $this->model = $model;
         parent::__construct($app);
     }
 
