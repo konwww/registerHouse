@@ -4,7 +4,9 @@ namespace app\index\controller;
 
 use app\index\model\CourseTable;
 use think\App;
+use think\console\command\make\Model;
 use think\facade\Session;
+use think\response\Json;
 
 class Order extends Container
 {
@@ -84,4 +86,36 @@ class Order extends Container
         $result = $this->model->save(["endTime" => date("Y-m-d H:i:s", time())], ["id" => $id, "uid" => $uid]);
         return $this->response($result, "ok");
     }
+
+    /**
+     * 定位 签到 or 签退
+     * @param $oid
+     * @param $latitude
+     * @param $longitude
+     * @param $token
+     */
+    public function signByGPS($oid, $latitude, $longitude, $token)
+    {
+        $data = $this->model->get($oid);
+        $method = $data->getData("method");
+        if (empty($method)) {
+            //未打卡 签到
+            $this->model->save(["signInGPSData" => [$latitude, $longitude], "signInTime" => date("Y-m-d H:i:s"),"method"=>"GPS"], ["id" => $oid]);
+        } else {
+            //已打卡 签退
+            $this->model->save(["signOutGPSData" => [$latitude, $longitude],"signOutTime" => date("Y-m-d H:i:s")], ["id" => $oid]);
+        }
+        return $this->response([""],"");
+    }
+
+    /**
+     * 照片 签到 or 签退
+     * @param $oid
+     * @param $token
+     */
+    public function signByPicture($oid, $token)
+    {
+        $uid = $this->request->session("user_id");
+    }
+
 }
